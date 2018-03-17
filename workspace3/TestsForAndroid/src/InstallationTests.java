@@ -15,7 +15,7 @@ import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import io.appium.java_client.service.local.flags.GeneralServerFlag;
 public class InstallationTests {
-	private AppiumDriver<MobileElement> driver=null;
+	//private AppiumDriver<MobileElement> driver=null;
 	private AppiumDriverLocalService service=null;
 	private AppiumServiceBuilder builder=null;
 	
@@ -28,12 +28,12 @@ public class InstallationTests {
 		caps.setCapability("platformName", "Android");
 		caps.setCapability("platformVersion", "6.0");*/
 		caps.setCapability("BROWSER_NAME", "Android"); 
-		caps.setCapability("VERSION", "7.1.1");  
+		caps.setCapability("VERSION", "6");  
 		caps.setCapability("deviceName","Android Emulator"); 
 		caps.setCapability("platformName","Android");
-		caps.setCapability("avd","Nexus_5X_API_25");     
-		caps.setCapability("appPackage", "com.android.smartreminder");
-		caps.setCapability("appActivity", "com.google.android.smartreminder.MainActivity");
+		caps.setCapability("avd","Nexus6P");     
+		caps.setCapability("appPackage", "https://github.com/AkzharkynDM/SmartReminder/tree/master/app/src/main/java/com/example/android/smartreminder");
+		caps.setCapability("appActivity", "https://github.com/AkzharkynDM/SmartReminder/tree/master/app/src/main/java/com/example/android/smartreminder/MainActivity.java");
 		caps.setCapability("noReset", "true");
 		
 		//Build the Appium service
@@ -53,18 +53,18 @@ public class InstallationTests {
 		service.start();		
 		
 		//Instantiate Appium Driver			
-		try {
+		/*try {
 				driver = new AndroidDriver<MobileElement>(new URL("http://0.0.0.0:4723/wd/hub"), caps);
 			
 		} catch (MalformedURLException e) {
 			System.out.println(e.getMessage());
-		}
+		}*/
 	}
 			
 	 @AfterTest
 	 public void closeAll(){
 		 service.stop();
-		 driver.quit();
+		 //driver.quit();
 	 }
 	
 }

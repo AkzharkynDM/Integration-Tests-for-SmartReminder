@@ -73,5 +73,6 @@
 	<classpathentry kind="lib" path="C:/Users/User/Downloads/jars for android testing/necessary jars another source/xml-apis-1.4.01.jar"/>
 	<classpathentry kind="lib" path="C:/Users/User/Downloads/jars for android testing/spoon-client-1.7.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/User/Downloads/jars for android testing/spoon-runner-1.7.1-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/Downloads/jars for android testing/sqlite-jdbc-3.7.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

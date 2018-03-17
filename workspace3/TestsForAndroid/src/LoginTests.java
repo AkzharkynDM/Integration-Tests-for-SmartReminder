@@ -38,7 +38,7 @@ public class LoginTests {
 	private ResultSet resultSet = null;
 	private WebDriver webdriver;
 	private AppiumDriver<MobileElement> androiddriver=null;
-	private AppiumDriver<MobileElement> driver=null;
+	//private AppiumDriver<MobileElement> driver=null;
 	private AppiumDriverLocalService service=null;
 	private AppiumServiceBuilder builder=null;
 	
@@ -63,53 +63,45 @@ public class LoginTests {
 		webdriver = new ChromeDriver(options);
 		webdriver.get("<URL>");
 		
-		
-			//Set the Desired Capabilities
-			DesiredCapabilities caps = new DesiredCapabilities();
-			/*caps.setCapability("deviceName", "My Phone");
-			caps.setCapability("udid", "ENUL6303030010"); //Give Device ID of your mobile phone
-			caps.setCapability("platformName", "Android");
-			caps.setCapability("platformVersion", "6.0");*/
-			caps.setCapability("BROWSER_NAME", "Android"); 
-			caps.setCapability("VERSION", "7.1.1");  
-			caps.setCapability("deviceName","Android Emulator"); 
-			caps.setCapability("platformName","Android");
-			caps.setCapability("avd","Nexus_5X_API_25");     
-			caps.setCapability("appPackage", "com.android.smartreminder");
-			caps.setCapability("appActivity", "com.google.android.smartreminder.MainActivity");
-			caps.setCapability("noReset", "true");
-			
-			//Build the Appium service
-			builder = new AppiumServiceBuilder();
-			builder.withIPAddress("127.0.0.1");
-			builder.usingPort(4723);
-			builder.usingDriverExecutable(new File("C:\\Program Files\\nodejs\\node.exe"));
-			builder.withAppiumJS(new File("C:\\Users\\User\\AppData\\Roaming\\npm\\node_modules\\appium\\build\\lib\\main.js"));
-			//builder.withLogFile(new File("C:\\Users\\User\\workspace\\AppiumTest\\ConsoleLogs\\AppiumConsoleLogs.txt")));
-			
-			builder.withCapabilities(caps);
-			builder.withArgument(GeneralServerFlag.SESSION_OVERRIDE);
-			builder.withArgument(GeneralServerFlag.LOG_LEVEL,"error");
-					
-			service = AppiumDriverLocalService.buildService(builder);
+		//Set the Desired Capabilities
+				DesiredCapabilities caps = new DesiredCapabilities();
+				/*caps.setCapability("deviceName", "My Phone");
+				caps.setCapability("udid", "ENUL6303030010"); //Give Device ID of your mobile phone
+				caps.setCapability("platformName", "Android");
+				caps.setCapability("platformVersion", "6.0");*/
+				caps.setCapability("BROWSER_NAME", "Android"); 
+				caps.setCapability("VERSION", "6");  
+				caps.setCapability("deviceName","Android Emulator"); 
+				caps.setCapability("platformName","Android");
+				caps.setCapability("avd","Nexus6P");     
+				caps.setCapability("appPackage", "https://github.com/AkzharkynDM/SmartReminder/tree/master/app/src/main/java/com/example/android/smartreminder");
+				caps.setCapability("appActivity", "https://github.com/AkzharkynDM/SmartReminder/tree/master/app/src/main/java/com/example/android/smartreminder/LoginActivity.java");
+				caps.setCapability("noReset", "true");
 				
-			service.start();		
-			
-			//Instantiate Appium Driver			
-			try {
-					driver = new AndroidDriver<MobileElement>(new URL("http://0.0.0.0:4723/wd/hub"), caps);
+				//Build the Appium service
+				builder = new AppiumServiceBuilder();
+				builder.withIPAddress("127.0.0.1");
+				builder.usingPort(4723);
+				builder.usingDriverExecutable(new File("C:\\Program Files\\nodejs\\node.exe"));
+				builder.withAppiumJS(new File("C:\\Users\\User\\AppData\\Roaming\\npm\\node_modules\\appium\\build\\lib\\main.js"));
+				//builder.withLogFile(new File("C:\\Users\\User\\workspace\\AppiumTest\\ConsoleLogs\\AppiumConsoleLogs.txt")));
 				
-			} catch (MalformedURLException e) {
-				System.out.println(e.getMessage());
-			}
-		
-		//Instantiate Appium Driver			
-		try {
-			androiddriver = new AndroidDriver<MobileElement>(new URL("http://0.0.0.0:4723/wd/hub"), caps);
+				builder.withCapabilities(caps);
+				builder.withArgument(GeneralServerFlag.SESSION_OVERRIDE);
+				builder.withArgument(GeneralServerFlag.LOG_LEVEL,"error");
+						
+				service = AppiumDriverLocalService.buildService(builder);
 					
-		} catch (MalformedURLException e) {
-				System.out.println(e.getMessage());
-		}
+				service.start();		
+				
+				//Instantiate Appium Driver			
+				/*try {
+						driver = new AndroidDriver<MobileElement>(new URL("http://0.0.0.0:4723/wd/hub"), caps);
+					
+				} catch (MalformedURLException e) {
+					System.out.println(e.getMessage());
+				}*/	
+	
 	}
  
 	@Test
@@ -202,7 +194,7 @@ public class LoginTests {
 	}
 	
 	webdriver.quit();
-	androiddriver.quit();
+	androiddriver.quit();	
 	}
  
 }
