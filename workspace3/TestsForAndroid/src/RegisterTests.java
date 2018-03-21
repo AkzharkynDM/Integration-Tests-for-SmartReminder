@@ -9,9 +9,12 @@ import io.appium.java_client.service.local.flags.GeneralServerFlag;
 
 import static org.testng.Assert.assertEquals;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.nio.file.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -50,30 +53,11 @@ public class RegisterTests {
 	private MobileElement editTextNickname;
 	private MobileElement editTextPassword;
 	private MobileElement editTextEmail;
-	private MobileElement editTextConfirmPassword;	
+	private MobileElement editTextConfirmPassword;		
 	
 	@BeforeTest
 	public void SetUpConnection() throws SQLException, ClassNotFoundException {
-	
-		// Register JDBC driver (JDBC driver name and Database URL)
-		Class.forName("org.sqlite.JDBC");
-
-		//create a jdbc connection to book.db located in below file path
-		String path="jdbc:sqlite:E:\\test\\usersManager.db";
-		conn = DriverManager.getConnection(path);
-		conn.setAutoCommit(false);
-		System.setProperty("webdriver.chrome.driver", "<Path of Driver>\\chromedriver.exe");
-		ChromeOptions options = new ChromeOptions();
-
-		// Code to disable the popup of saved password
-		Map<String, Object> prefs = new HashMap<String, Object>();
-		prefs.put("credentials_enable_service", false);
-		prefs.put("password_manager_enabled", false);
-		options.setExperimentalOption("prefs", prefs);
-		webdriver = new ChromeDriver(options);
-		webdriver.get("<URL>");
-		
-		
+			
 		//Set the Desired Capabilities
 				DesiredCapabilities caps = new DesiredCapabilities();
 				/*caps.setCapability("deviceName", "My Phone");
@@ -85,8 +69,8 @@ public class RegisterTests {
 				caps.setCapability("deviceName","Android Emulator"); 
 				caps.setCapability("platformName","Android");
 				caps.setCapability("avd","Nexus6P");     
-				caps.setCapability("appPackage", "https://github.com/AkzharkynDM/SmartReminder/tree/master/app/src/main/java/com/example/android/smartreminder");
-				caps.setCapability("appActivity", "https://github.com/AkzharkynDM/SmartReminder/tree/master/app/src/main/java/com/example/android/smartreminder/RegisterActivity.java");
+				caps.setCapability("appPackage", "https://github.com/Samir689/SmartReminder/tree/master/app/src/main/java/com/example/android/smartreminder");
+				caps.setCapability("appActivity", "https://github.com/Samir689/SmartReminder/tree/master/app/src/main/java/com/example/android/smartreminder/RegisterActivity.java");
 				caps.setCapability("noReset", "true");
 				
 				//Build the Appium service
@@ -112,20 +96,62 @@ public class RegisterTests {
 				} catch (MalformedURLException e) {
 					System.out.println(e.getMessage());
 				}*/		
+				// Register JDBC driver (JDBC driver name and Database URL)
+				//Class.forName("org.sqlite.JDBC");
+
+				//create a jdbc connection to book.db located in below file path
+				//String path="jdbc:sqlite:E:\\test\\usersManager.db";
+				//String path="\\data\\data\\smartreminder\\databases\\usersManager.db";
+				//String path="data/data/smartreminder/databases/usersManager.db";
+				//conn = DriverManager.getConnection(path);
+				  		
+				/*System.setProperty("webdriver.chrome.driver", "<Path of Driver>\\chromedriver.exe");
+				ChromeOptions options = new ChromeOptions();
+
+				// Code to disable the popup of saved password
+				Map<String, Object> prefs = new HashMap<String, Object>();
+				prefs.put("credentials_enable_service", false);
+				prefs.put("password_manager_enabled", false);
+				options.setExperimentalOption("prefs", prefs);
+				webdriver = new ChromeDriver(options);
+				webdriver.get("<URL>");*/
+				
+				
 	}
 
 
 @Test
 public void OperationalMethod() {
 	try {
-		// Register JDBC driver (JDBC driver name and Database URL)
-		Class.forName("org.sqlite.JDBC");
-		
-		//create a jdbc connection to usersManager.db located in below file path
-		String path="jdbc:sqlite:E:\\test\\usersManager.db";
-		conn = DriverManager.getConnection(path);
-		conn.setAutoCommit(false);
-		// the mysql insert statement
+		Path path = null;
+	    try {
+	      path = Files.createTempFile("cms", ".db");
+	      path.toFile().setWritable(true);
+	      path.toFile().getParentFile().setWritable(true);		     
+	      Class.forName("org.sqlite.JDBC");
+	     // This following statement throws an exception.
+	      try(
+	        Connection connection =
+	            DriverManager.getConnection(
+	                 "jdbc:sqlite:" +  path.toFile().getCanonicalPath());) {
+
+	        // Prepared Statements and result set query to return the appropriate output.
+	        }
+	      
+	    } catch (Exception e) {
+	      System.out.println("Unable to create a temporary file: cms.db");
+	      try {
+			throw e;
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	    } finally {
+	      if (path != null) {
+	        path.toFile().deleteOnExit();
+	      }
+	    }				
+	
 		String query = " Insert into contacts (WHERE user_name, nick_name , user_email, user_password, user_salt) values(?,?,?,?,?)";
 		
 		editTextName=androiddriver.findElement(By.tagName("textInputEditTextName"));
@@ -158,7 +184,7 @@ public void OperationalMethod() {
 		
 		// execute the preparedstatement
 		preparedStmt.execute();
-		conn.close();
+		//conn.close();
 	} catch (Exception e) {
 		System.out.println("Got an exception!");
 		System.out.println(e.getMessage());

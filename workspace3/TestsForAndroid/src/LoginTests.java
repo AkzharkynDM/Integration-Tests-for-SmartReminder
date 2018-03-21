@@ -43,25 +43,7 @@ public class LoginTests {
 	private AppiumServiceBuilder builder=null;
 	
 	@BeforeTest
-	public void SetUpConnection() throws SQLException, ClassNotFoundException {
-	
-		// Register JDBC driver (JDBC driver name and Database URL)
-		Class.forName("org.sqlite.JDBC");
- 
-		//create a jdbc connection to book.db located in below file path
-		String path="jdbc:sqlite:E:\\test\\usersManager.db";
-		conn = DriverManager.getConnection(path);
-		conn.setAutoCommit(false);
-		System.setProperty("webdriver.chrome.driver", "<Path of Driver>\\chromedriver.exe");
-		ChromeOptions options = new ChromeOptions();
- 
-		// Code to disable the popup of saved password
-		Map<String, Object> prefs = new HashMap<String, Object>();
-		prefs.put("credentials_enable_service", false);
-		prefs.put("password_manager_enabled", false);
-		options.setExperimentalOption("prefs", prefs);
-		webdriver = new ChromeDriver(options);
-		webdriver.get("<URL>");
+	public void SetUpConnection() throws SQLException, ClassNotFoundException {		
 		
 		//Set the Desired Capabilities
 				DesiredCapabilities caps = new DesiredCapabilities();
@@ -74,8 +56,8 @@ public class LoginTests {
 				caps.setCapability("deviceName","Android Emulator"); 
 				caps.setCapability("platformName","Android");
 				caps.setCapability("avd","Nexus6P");     
-				caps.setCapability("appPackage", "https://github.com/AkzharkynDM/SmartReminder/tree/master/app/src/main/java/com/example/android/smartreminder");
-				caps.setCapability("appActivity", "https://github.com/AkzharkynDM/SmartReminder/tree/master/app/src/main/java/com/example/android/smartreminder/LoginActivity.java");
+				caps.setCapability("appPackage", "https://github.com/Samir689/SmartReminder/tree/master/app/src/main/java/com/example/android/smartreminder");
+				caps.setCapability("appActivity", "https://github.com/Samir689/SmartReminder/tree/master/app/src/main/java/com/example/android/smartreminder/LoginActivity.java");
 				caps.setCapability("noReset", "true");
 				
 				//Build the Appium service
@@ -101,7 +83,24 @@ public class LoginTests {
 				} catch (MalformedURLException e) {
 					System.out.println(e.getMessage());
 				}*/	
-	
+				
+				// Register JDBC driver (JDBC driver name and Database URL)
+				Class.forName("org.sqlite.JDBC");
+		 
+				//create a jdbc connection to book.db located in below file path
+				String path="jdbc:sqlite:\\data\\data\\smartreminder\\databases\\usersManager.db";
+				conn = DriverManager.getConnection(path);
+				conn.setAutoCommit(false);
+				System.setProperty("webdriver.chrome.driver", "<Path of Driver>\\chromedriver.exe");
+				ChromeOptions options = new ChromeOptions();
+		 
+				// Code to disable the popup of saved password
+				Map<String, Object> prefs = new HashMap<String, Object>();
+				prefs.put("credentials_enable_service", false);
+				prefs.put("password_manager_enabled", false);
+				options.setExperimentalOption("prefs", prefs);
+				webdriver = new ChromeDriver(options);
+				webdriver.get("<URL>");
 	}
  
 	@Test
