@@ -17,6 +17,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -43,8 +44,8 @@ public class LoginTests {
 	private AppiumServiceBuilder builder=null;
 	
 	@BeforeTest
-	public void SetUpConnection() throws SQLException, ClassNotFoundException {		
-		
+	public void SetUpConnection() throws SQLException, ClassNotFoundException {
+			
 		//Set the Desired Capabilities
 				DesiredCapabilities caps = new DesiredCapabilities();
 				/*caps.setCapability("deviceName", "My Phone");
@@ -71,38 +72,14 @@ public class LoginTests {
 				builder.withCapabilities(caps);
 				builder.withArgument(GeneralServerFlag.SESSION_OVERRIDE);
 				builder.withArgument(GeneralServerFlag.LOG_LEVEL,"error");
-						
+				Assert.assertNotEquals(builder, null, "The emulator (virtual Android device) builder was not created properly");
 				service = AppiumDriverLocalService.buildService(builder);
 					
-				service.start();		
+				service.start();	
 				
-				//Instantiate Appium Driver			
-				/*try {
-						driver = new AndroidDriver<MobileElement>(new URL("http://0.0.0.0:4723/wd/hub"), caps);
-					
-				} catch (MalformedURLException e) {
-					System.out.println(e.getMessage());
-				}*/	
-				
-				// Register JDBC driver (JDBC driver name and Database URL)
-				Class.forName("org.sqlite.JDBC");
-		 
-				//create a jdbc connection to book.db located in below file path
-				String path="jdbc:sqlite:\\data\\data\\smartreminder\\databases\\usersManager.db";
-				conn = DriverManager.getConnection(path);
-				conn.setAutoCommit(false);
-				System.setProperty("webdriver.chrome.driver", "<Path of Driver>\\chromedriver.exe");
-				ChromeOptions options = new ChromeOptions();
-		 
-				// Code to disable the popup of saved password
-				Map<String, Object> prefs = new HashMap<String, Object>();
-				prefs.put("credentials_enable_service", false);
-				prefs.put("password_manager_enabled", false);
-				options.setExperimentalOption("prefs", prefs);
-				webdriver = new ChromeDriver(options);
-				webdriver.get("<URL>");
+				Assert.assertNotEquals(service, null, "The server was not opened properly");	
 	}
- 
+	
 	@Test
 	public void OperationalMethod() {
 		

@@ -30,6 +30,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.openqa.selenium.Keys;
@@ -84,39 +86,12 @@ public class RegisterTests {
 				builder.withCapabilities(caps);
 				builder.withArgument(GeneralServerFlag.SESSION_OVERRIDE);
 				builder.withArgument(GeneralServerFlag.LOG_LEVEL,"error");
-						
+				Assert.assertNotEquals(builder, null, "The emulator (virtual Android device) builder was not created properly");
 				service = AppiumDriverLocalService.buildService(builder);
 					
-				service.start();		
+				service.start();	
 				
-				//Instantiate Appium Driver			
-				/*try {
-						driver = new AndroidDriver<MobileElement>(new URL("http://0.0.0.0:4723/wd/hub"), caps);
-					
-				} catch (MalformedURLException e) {
-					System.out.println(e.getMessage());
-				}*/		
-				// Register JDBC driver (JDBC driver name and Database URL)
-				//Class.forName("org.sqlite.JDBC");
-
-				//create a jdbc connection to book.db located in below file path
-				//String path="jdbc:sqlite:E:\\test\\usersManager.db";
-				//String path="\\data\\data\\smartreminder\\databases\\usersManager.db";
-				//String path="data/data/smartreminder/databases/usersManager.db";
-				//conn = DriverManager.getConnection(path);
-				  		
-				/*System.setProperty("webdriver.chrome.driver", "<Path of Driver>\\chromedriver.exe");
-				ChromeOptions options = new ChromeOptions();
-
-				// Code to disable the popup of saved password
-				Map<String, Object> prefs = new HashMap<String, Object>();
-				prefs.put("credentials_enable_service", false);
-				prefs.put("password_manager_enabled", false);
-				options.setExperimentalOption("prefs", prefs);
-				webdriver = new ChromeDriver(options);
-				webdriver.get("<URL>");*/
-				
-				
+				Assert.assertNotEquals(service, null, "The server was not opened properly");	
 	}
 
 
@@ -143,7 +118,7 @@ public void OperationalMethod() {
 	      try {
 			throw e;
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
+			System.out.println("Exception was not thrown properly");
 			e1.printStackTrace();
 		}
 	    } finally {
@@ -182,15 +157,28 @@ public void OperationalMethod() {
 		preparedStmt.setString(3, editTextEmail.getText());
 		preparedStmt.setString(4, editTextPassword.getText());
 		
-		// execute the preparedstatement
+		// execute the prepared statement
 		preparedStmt.execute();
 		//conn.close();
 	} catch (Exception e) {
-		System.out.println("Got an exception!");
+		System.out.println("The execution of query to insert a new user in our application was not successful");
 		System.out.println(e.getMessage());
 	}
+	
+	int countRows=-1;
+	String countquery = " select count(*) from contacts ";
+	try {
+	stmt = conn.createStatement();
+	resultSet = stmt.executeQuery(countquery);	
+		countRows=resultSet.getFetchSize();
+	} catch (SQLException e) {
+		System.out.println("The execution of query to count the total number of rows was not successful");
+		e.printStackTrace();
+	}
+	Assert.assertEquals(countRows, 1, "The user was able to successfully register in our application");
 }
 
+@AfterMethod
 public void CloseTheConnection() throws SQLException {
 //To clean all entered data
 	editTextName.findElement(By.tagName("textInputEditTextName")).sendKeys("");
@@ -201,12 +189,18 @@ public void CloseTheConnection() throws SQLException {
 	
 
 //To delete entered registration credentials
-	String query = " Delete from contacts WHERE user_name, nick_name , user_email, user_password, user_salt";
+	String deletequery = " Delete from contacts WHERE user_name, nick_name , user_email, user_password, user_salt";
 	stmt = conn.createStatement();
-	resultSet = stmt.executeQuery(query);
-
+	resultSet = stmt.executeQuery(deletequery);
 	
-// Code to close each and all Object related to Database connection
+	int countRows=-1;
+	String countquery = " select count(*) from contacts ";
+	stmt = conn.createStatement();
+	resultSet = stmt.executeQuery(countquery);
+	countRows=resultSet.getFetchSize();
+	Assert.assertEquals(countRows, 0, "The row that was created duirng the testing was not deleted properly");
+	
+// Code to close everything related to Database connection
 if (resultSet != null) {
 	try {
 		resultSet.close();

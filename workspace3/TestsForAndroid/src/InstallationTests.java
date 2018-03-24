@@ -1,6 +1,7 @@
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -48,23 +49,18 @@ public class InstallationTests {
 		builder.withArgument(GeneralServerFlag.SESSION_OVERRIDE);
 		builder.withArgument(GeneralServerFlag.LOG_LEVEL,"error");
 				
+		Assert.assertNotEquals(builder, null, "The emulator (virtual Android device) builder was not created properly");
 		service = AppiumDriverLocalService.buildService(builder);
 			
-		service.start();		
+		service.start();	
 		
-		//Instantiate Appium Driver			
-		/*try {
-				driver = new AndroidDriver<MobileElement>(new URL("http://0.0.0.0:4723/wd/hub"), caps);
-			
-		} catch (MalformedURLException e) {
-			System.out.println(e.getMessage());
-		}*/
+		Assert.assertNotEquals(service, null, "The server was not opened properly");
+		
 	}
 			
 	 @AfterTest
 	 public void closeAll(){
-		 service.stop();
-		 //driver.quit();
+		 service.stop();		
 	 }
 	
 }
